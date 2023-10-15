@@ -141,105 +141,7 @@ def return_home(window):
     home_screen()
   return func
 #--------------------------------------------------------
-def new_timed_game(home):
-  def func():
-    #sets questions and answers
-    global qanda
-    global timed
-    global countdown
-    #displays number of correct answers
-    global timed_correct_answers
-    global timed_questions
-    def loop1():
-      global countdown
-      while countdown > 0:
-        countdown -= 1
-        print(countdown)
-        time.sleep(1)
-    
-    def loop2():
-      while countdown > 0:
-      
-        
-        
-        index = random.randint(0, 45)
-        index2 = random.randint(0, 45)
-        index3 = random.randint(0, 45)
-        print(index, index2, index3)
-        i = random.choice([index, index2, index3])
-        question = "A patient walks in with: " + list(qanda.values())[i]
-    
-        answer_option1 = list(qanda.keys())[index]
-        answer_option2 = list(qanda.keys())[index2]
-        answer_option3 = list(qanda.keys())[index3]
-    
-        #removes original window
-        home.destroy()
-        #makes and edits new window
-        timed = Tk()
-        timed.geometry("560x290")
-        timed.config(background="grey")
-        #displays seconds remaining
-        countdown_label = Label(timed, text= str(countdown))
-        #displays correct answer
-        display_answers = Label(timed, text= str(timed_correct_answers) + "/" + str(timed_questions))
-        display_answers.config(background="grey", font= 9)
-        display_answers.pack()
-        #prints question
-        question_text = Label(timed, text=question, font=("Helvetica", 12), bg= "grey")
-        question_text.pack()
-        #makes button 1
-        button1 = Button(timed, text= answer_option1)
-        button1.config(font=("Helvetica", 15, "bold"))
-        button1.config(command= check_answer_timed(display_answers, index, i))
-        button1.place(relx=0.5, rely=0.6)
-        button1.pack()
-        #makes button 2
-        button2 = Button(timed, text= answer_option2)
-        button2.config(font=("Helvetica", 15, "bold"))
-        button2.config(command= check_answer_timed(display_answers, index2, i))
-        button2.place(relx=0.5, rely=0.8)
-        button2.pack()
-        #makes button 3
-        button3 = Button(timed, text= answer_option3)
-        button3.config(font=("Helvetica", 15, "bold"))
-        button3.config(command= check_answer_timed(display_answers, index3, i))
-        button3.place(relx=0.5, rely=1)
-        button3.pack()
-        #displays button to return to home screen
-        button_home = Button(timed, text="Home", command=  return_home(timed))
-        button_home.place(relx=0.5, rely = 10, anchor= "center")
-        button_home.pack()
-        #makes window
-        timed.mainloop()
-      else:
-        display_score = Label("You got: "+ str(timed_correct_answers) + "/" + str(timed_questions) + " questions correct! Returning to home in 10 seconds.")
-        time.sleep(10)
-        return_home(timed)
 
-    thread1 = threading.Thread(target=loop1)
-    thread2 = threading.Thread(target=loop2)
-
-    thread2.start()
-    thread1.start()
-      
-  return func
-
-#--------------------------------------------
-
-def check_answer_timed(display_answers, index, i):
-  def func():
-    global timed_questions
-    global timed
-    global timed_correct_answers
-    timed_questions += 1
-    if index == i:
-      timed_correct_answers += 1
-    display_answers.config(text = str(timed_correct_answers) + "/" + str(questions ))
-    display_answers.pack()
-    new_timed_game(timed)()
-
-  return func
 
 #--------------------------------------------------------
 def how_to_play(home):
@@ -272,10 +174,7 @@ def home_screen():
   play_button.config(font=("Helvetica", 30, "bold"))
   play_button.place(relx=0.5, rely=0.45, anchor= "center" )
   #play timed button
-  timed_button = Button(home, text="PLAY TIMED", command= new_timed_game(home))
-  timed_button.place(relx=0.5, rely=0.7, anchor= "center")
-  timed_button.config(font= ("Helvetica", 30, "bold"))
-  timed_button.pack()
+
   #How to play button
   how_to_play_button = Button(home, text="HOW TO PLAY", command= how_to_play(home))
   how_to_play_button.config(font= ("Helvetica", 20, "bold"))
